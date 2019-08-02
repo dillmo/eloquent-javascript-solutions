@@ -1,0 +1,37 @@
+<!doctype html>
+
+<h1>Mountains</h1>
+
+<div id="mountains"></div>
+
+<script>
+  "use strict";
+
+  const MOUNTAINS = [
+    {name: "Kilimanjaro", height: 5895, place: "Tanzania"},
+    {name: "Everest", height: 8848, place: "Nepal"},
+    {name: "Mount Fuji", height: 3776, place: "Japan"},
+    {name: "Vaalserberg", height: 323, place: "Netherlands"},
+    {name: "Denali", height: 6168, place: "United States"},
+    {name: "Popocatepetl", height: 5465, place: "Mexico"},
+    {name: "Mont Blanc", height: 4808, place: "Italy/France"}
+  ];
+
+  let labels = Object.keys(MOUNTAINS[0]);
+  let table = document.createElement("table");
+  let headers = Object.create(null);
+  for (let h of labels) {
+    headers[h] = h;
+  }
+  [headers].concat(MOUNTAINS).forEach((m, i) => {
+    let row = document.createElement("tr");
+    let cellType = i == 0 ? "th" : "td";
+    for (let label of labels) {
+      let child = document.createElement(cellType);
+      child.appendChild(document.createTextNode(m[label]));
+      row.appendChild(child);
+    }
+    table.appendChild(row);
+  });
+  document.getElementById("mountains").appendChild(table);
+</script>

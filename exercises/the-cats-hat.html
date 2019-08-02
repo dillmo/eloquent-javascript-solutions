@@ -1,0 +1,27 @@
+<!doctype html>
+
+<style>body { min-height: 200px }</style>
+<img src="../img/cat.png" id="cat" style="position: absolute">
+<img src="../img/hat.png" id="hat" style="position: absolute">
+
+<script>
+  let cat = document.querySelector("#cat");
+  let hat = document.querySelector("#hat");
+
+  let angle = 0;
+  let lastTime = null;
+  function animate(image, direction) {
+    function animateEllipse(time, image, direction) {
+      if (lastTime != null) angle += (time - lastTime) * 0.001;
+      lastTime = time;
+      image.style.top = (Math.sin(angle) * direction * 40 + 40) + "px";
+      image.style.left = (Math.cos(angle) * direction * 200 + 230) + "px";
+
+      requestAnimationFrame(time => animateEllipse(time, image, direction));
+    }
+
+    return time => animateEllipse(time, image, direction);
+  }
+  requestAnimationFrame(animate(cat, 1));
+  requestAnimationFrame(animate(hat, -1));
+</script>
