@@ -1,0 +1,36 @@
+<!doctype html>
+
+<style>
+  .trail { /* className for the trail elements */
+    position: absolute;
+    height: 6px; width: 6px;
+    border-radius: 3px;
+    background: teal;
+  }
+  body {
+    height: 300px;
+  }
+</style>
+
+<script>
+  let counter = 0;
+  window.addEventListener("mousemove", event => {
+    confetti = Array.from(document.getElementsByClassName("trail"));
+    let newConfetti;
+    if (confetti.length > 9) {
+      newConfetti = confetti.reduce((a, b) => {
+        aCounter = Number(a.getAttribute("data-counter"));
+        bCounter = Number(b.getAttribute("data-counter"));
+        return aCounter < bCounter ? a : b;
+      });
+    } else {
+      newConfetti = document.createElement("div");
+      newConfetti.className = "trail";
+      document.body.appendChild(newConfetti);
+    }
+    newConfetti.style.left = event.clientX + "px";
+    newConfetti.style.top = event.clientY + "px";
+    newConfetti.setAttribute("data-counter", counter);
+    counter++;
+  });
+</script>

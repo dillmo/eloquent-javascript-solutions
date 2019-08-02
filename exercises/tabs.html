@@ -1,0 +1,36 @@
+<!doctype html>
+
+<tab-panel>
+  <div data-tabname="one">Tab one</div>
+  <div data-tabname="two">Tab two</div>
+  <div data-tabname="three">Tab three</div>
+</tab-panel>
+<script>
+  function asTabs(node) {
+    let tabs = Array.from(node.children);
+    for (let tab of tabs.reverse()) {
+      let button = document.createElement("button");
+      let tabName = tab.getAttribute("data-tabname");
+      button.setAttribute("data-tabname", tabName);
+      button.appendChild(document.createTextNode(tabName));
+      node.insertBefore(button, node.firstChild);
+    }
+
+    function show(tabName) {
+      for (let tab of tabs) {
+        if (tab.getAttribute("data-tabname") == tabName) {
+          tab.style.display = "";
+        } else {
+          tab.style.display = "none";
+        }
+      }
+    }
+
+    node.addEventListener("click", event => {
+      show(event.target.getAttribute("data-tabname"));
+    });
+
+    show(tabs[tabs.length - 1].getAttribute("data-tabname"));
+  }
+  asTabs(document.querySelector("tab-panel"));
+</script>
