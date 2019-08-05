@@ -1,0 +1,12 @@
+body {
+  width: 960px;
+  margin: 0 auto;
+}
+
+canvas {
+  display: block;
+}
+
+div {
+  margin: 50px 0;
+}

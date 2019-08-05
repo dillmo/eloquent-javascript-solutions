@@ -1,5 +1,5 @@
 const scale = 20;
-let otherSprites, playerSprites;
+let otherSprites, playerSprites, flippedPlayerSprites;
 const playerXOverlap = 4;
 
 function elt(name, attrs, ...children) {
@@ -83,6 +83,24 @@ class DOMDisplay {
   }
 }
 
+// returns a canvas that is a flipped spritesheet
+// does not support multiple rows
+function flipSprites(sprites, spriteSize) {
+  let canvas = document.createElement("canvas");
+  canvas.width = sprites.width;
+  canvas.height = sprites.height;
+  let cx = canvas.getContext("2d");
+  for (let i = 0; i < sprites.width; i += spriteSize) {
+    cx.save();
+    flipHorizontally(cx, i + spriteSize / 2);
+    console.log(i, i + spriteSize);
+    cx.drawImage(sprites, i, 0, spriteSize, sprites.height,
+                          i, 0, spriteSize, sprites.height);
+    cx.restore();
+  }
+  return canvas;
+}
+
 class CanvasDisplay {
   constructor(parent, level) {
     this.canvas = document.createElement("canvas");
@@ -100,10 +118,17 @@ class CanvasDisplay {
       height: this.canvas.height / scale
     };
 
-    if (!otherSprites) otherSprites = document.createElement("img");
-    otherSprites.src = "img/sprites.png";
-    if (!playerSprites) playerSprites = document.createElement("img");
-    playerSprites.src = "img/player.png";
+    if (!otherSprites) {
+      otherSprites = document.createElement("img");
+      otherSprites.src = "img/sprites.png";
+    }
+    if (!playerSprites) {
+      playerSprites = document.createElement("img");
+      playerSprites.src = "img/player.png";
+      playerSprites.addEventListener("load", () => {
+        flippedPlayerSprites = flipSprites(playerSprites, 24);
+      });
+    }
   }
 
   syncState(state) {
@@ -178,14 +203,10 @@ class CanvasDisplay {
       tile = Math.floor(Date.now() / 60) % 8;
     }
 
-    this.cx.save();
-    if (this.flipPlayer) {
-      flipHorizontally(this.cx, x + width / 2);
-    }
+    let spriteSheet = this.flipPlayer ? flippedPlayerSprites : playerSprites;
     let tileX = tile * width;
-    this.cx.drawImage(playerSprites, tileX, 0, width, height,
+    this.cx.drawImage(spriteSheet, tileX, 0, width, height,
                                   x, y, width, height);
-    this.cx.restore();
   }
 
   drawActors(actors) {
