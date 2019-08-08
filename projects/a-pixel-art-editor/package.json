@@ -1,0 +1,14 @@
+{
+  "name": "a-pixel-art-editor",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "webpack": "^4.39.1",
+    "webpack-cli": "^3.3.6"
+  },
+  "scripts": {
+    "build": "webpack",
+    "debug": "webpack -d"
+  }
+}
