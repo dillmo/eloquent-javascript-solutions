@@ -49,103 +49,27 @@ export function circle(start, state, dispatch) {
   return drawCircle;
 }
 
-export function line (start, state, dispatch) {
-  let draw = drawLine(start, state, dispatch);
-  draw(start);
-  return draw;
-}
+const around = [{dx: -1, dy: 0}, {dx: 1, dy: 0},
+                {dx: 0, dy: -1}, {dx: 0, dy: 1}];
 
-function buildDirections() {
-  const top = {dx: 0, dy: -1}, topRight = {dx: 1, dy: -1};
-  const right = {dx: 1, dy: 0}, bottomRight = {dx: 1, dy: 1};
-  const bottom = {dx: 0, dy: 1}, bottomLeft = {dx: -1, dy: 1};
-  const left = {dx: -1, dy: 0}, topLeft = {dx: -1, dy: -1};
-
-  const around = [top, right, bottom, left];
-  const upRight = [top, topRight, right];
-  const downRight = [right, bottomRight, bottom];
-  const downLeft = [bottom, bottomLeft, left];
-  const upLeft = [left, topLeft, top];
-  return {around, upRight, downRight, downLeft, upLeft};
-}
-
-const {around, upRight, downRight, downLeft, upLeft} = buildDirections();
-
-function drawLine(start, state, dispatch) {
-  function draw(pos) {
-    let drawn = [];
-    drawn.push(Object.assign({}, start, {color: state.color}));
-    if (!(pos.x == start.x && pos.y == start.y)) {
-      if (start.x == pos.x) {
-        // build a vertical line if we can
-        let startY = Math.min(start.y, pos.y), endY = Math.max(start.y, pos.y);
-        for (let y = startY; y <= endY; y++) {
-          drawn.push({x: pos.x, y, color: state.color});
-        }
-      } else if (start.y == pos.y) {
-        // build a horizontal line if we can
-        let startX = Math.min(start.x, pos.x), endX = Math.max(start.x, pos.x);
-        for (let x = startX; x <= endX; x++) {
-          drawn.push({x, y: pos.y, color: state.color});
-        }
+function line(start, state, dispatch) {
+  function drawLine(pos) {
+    if (start.x == pos.x) {
+      // draw vertical line to avoid division by zero
+    } else {
+      let slope = (pos.y - start.y) / (pos.x - start.x);
+      if (-1 < slope && slope < 1) {
+        // interpolate along x
       } else {
-        // otherwise use a mathematical function
-        let m = (pos.y - start.y) / (pos.x - start.x);
-        let b = m * start.x + start.y;
-        let checkDist = s => lineInSquare(x => ({x, y: m * x + b}),
-                                          y => ({x: (y - b) / m, y}),
-                                          s);
-        let directions;
-        if (pos.x < start.x && pos.y < start.y) directions = upLeft;
-        else if (pos.x < start.x && pos.y > start.y) directions = downLeft;
-        else if (pos.x > start.x && pos.y < start.y) directions = upRight;
-        else directions = downRight;
-        for (let i = 0;; i++) {
-          let neighbors = [];
-          for (let direction of directions) {
-            neighbors.push({x: drawn[i].x + direction.dx,
-                            y: drawn[i].y + direction.dy});
-          }
-          if (neighbors.some(n => n.x == pos.x && n.y == pos.y)) {
-            drawn.push(Object.assign({}, pos, {color: state.color}));
-            break;
-          }
-          drawn.push(Object.assign({}, neighbors.reduce((a, b) => {
-                       if (checkDist(a) < checkDist(b)) {
-                         return a;
-                       }
-                       return b;
-                     }),
-                     {color: state.color}));
-        }
+        // interpolate along y
       }
     }
-    dispatch({picture: state.picture.draw(drawn)});
-  }
-  return draw;
-}
-
-// return the amount of line in a grid square
-function lineInSquare(lineX, lineY, square) {
-  let intersects = [];
-  let xTest = x => between(x, square.x, square.x + 1);
-  let yTest = (x, y) => between(y, square.y, square.y + 1);
-  let tests = [
-    {fun: lineX, val: square.y, test: xTest},
-    {fun: lineX, val: square.y + 1, test: xTest},
-    {fun: lineY, val: square.x, test: yTest},
-    {fun: lineY, val: square.x + 1, test: yTest}
-  ];
-  for (let test of tests) {
-    let {x, y} = test.fun(test.val);
-    if (test.test(x, y)) intersects.push({x, y});
-    if (intersects.length == 2) return distance(...intersects);
   }
 }
 
-function distance(a, b) {
-  let dx = b.x - a.x, dy = b.y - a.y;
-  return Math.sqrt(dx * dx + dy * dy);
+function interpolate(slope, distance) {
+  for (let i = 0; i < distance; i++) {
+    
 }
 
 function between(val, a, b) {
