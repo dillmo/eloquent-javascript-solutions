@@ -1,10 +1,25 @@
 export function draw(pos, state, dispatch) {
-  function drawPixel({x, y}, state) {
-    let drawn = {x, y, color: state.color};
-    dispatch({picture: state.picture.draw([drawn])});
+  let lastPos;
+  let drawn = [];
+  function drawPixel(pos) {
+    if (lastPos) {
+      drawn = drawn.concat(drawLine(lastPos, pos, state)
+        .filter(d => !containsCoord(drawn, d)));
+    } else {
+      drawn.push({x: pos.x, y: pos.y, color: state.color});
+    }
+    lastPos = pos;
+    dispatch({picture: state.picture.draw(drawn)});
   }
-  drawPixel(pos, state);
+  drawPixel(pos);
   return drawPixel;
+}
+
+function containsCoord(array, coord) {
+  for (let elem of array) {
+    if (elem.x == coord.x && elem.y == coord.y) return true;
+  }
+  return false;
 }
 
 export function rectangle(start, state, dispatch) {
@@ -52,24 +67,64 @@ export function circle(start, state, dispatch) {
 const around = [{dx: -1, dy: 0}, {dx: 1, dy: 0},
                 {dx: 0, dy: -1}, {dx: 0, dy: 1}];
 
-function line(start, state, dispatch) {
-  function drawLine(pos) {
-    if (start.x == pos.x) {
-      // draw vertical line to avoid division by zero
-    } else {
-      let slope = (pos.y - start.y) / (pos.x - start.x);
-      if (-1 < slope && slope < 1) {
-        // interpolate along x
+function drawLine(start, pos, state) {
+  let {color} = state;
+  let drawn = [];
+  if (start.x == pos.x) {
+    let first = Math.min(start.y, pos.y), last = Math.max(start.y, pos.y);
+    for (let y = first; y <= last; y++) {
+      drawn.push({x: pos.x, y, color});
+    }
+  } else {
+    let slope = (pos.y - start.y) / (pos.x - start.x);
+    if (-1 < slope && slope < 1) {
+      let ys = interpolate(slope, Math.abs(pos.x - start.x));
+      let x;
+      if (pos.x < start.x) {
+        x = pos.x;
+        ys = ys.reverse().map(y => -y);
       } else {
-        // interpolate along y
+        x = start.x;
       }
+      ys.map(y => start.y + y).forEach((y, i) => {
+        drawn.push({x: x + i, y, color});
+      });
+    } else {
+      let xs = interpolate(1 / slope, Math.abs(pos.y - start.y));
+      let y;
+      if (pos.y < start.y) {
+        y = pos.y;
+        xs = xs.reverse().map(x => -x);
+      } else {
+        y = start.y;
+      }
+      xs.map(x => start.x + x).forEach((x, i) => {
+        drawn.push({x, y: y + i, color});
+      });
     }
   }
+  return drawn;
+}
+
+export function line(start, state, dispatch) {
+  drawLine(start, start, state, dispatch);
+  return pos => dispatch({
+    picture: state.picture.draw(drawLine(start, pos, state))
+  });
 }
 
 function interpolate(slope, distance) {
-  for (let i = 0; i < distance; i++) {
-    
+  let vals = [];
+  let negative;
+  if (slope < 0) {
+    negative = true;
+    slope *= -1;
+  }
+  for (let i = 0; i <= distance; i++) {
+    vals.push(Math.floor(i * slope));
+  }
+  if (negative) return vals.map(v => -v);
+  return vals;
 }
 
 function between(val, a, b) {
