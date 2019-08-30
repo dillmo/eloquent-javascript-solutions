@@ -1,3 +1,9 @@
 projects/a-pixel-art-editor/.pnp.js
 projects/a-pixel-art-editor/.cache
 projects/a-pixel-art-editor/dist
+exercises/20-nodejs/file-server/node_modules
+exercises/20-nodejs/file-server/dist
+exercises/20-nodejs/file-server/.cache
+exercises/20-nodejs/search-tool/node_modules
+exercises/20-nodejs/search-tool/dist
+exercises/20-nodejs/search-tool/.cache

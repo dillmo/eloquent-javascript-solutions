@@ -1,0 +1,21 @@
+{
+  "name": "file-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "build": "parcel build src/main.ts --target node src/index.html",
+    "serve": "node dist/main.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/mime": "^2.0.1",
+    "@types/node": "^12.7.2",
+    "cssnano": "^4.1.10",
+    "mime": "2.2.0",
+    "tslint": "^5.18.0",
+    "typescript": "^3.5.3"
+  }
+}
