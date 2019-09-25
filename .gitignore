@@ -7,3 +7,6 @@ exercises/20-nodejs/file-server/.cache
 exercises/20-nodejs/search-tool/node_modules
 exercises/20-nodejs/search-tool/dist
 exercises/20-nodejs/search-tool/.cache
+projects/a-skill-sharing-website/node_modules
+projects/a-skill-sharing-website/dist
+projects/a-skill-sharing-website/.cache
