@@ -15,7 +15,9 @@
     "@types/node": "^12.7.2",
     "cssnano": "^4.1.10",
     "mime": "2.2.0",
-    "tslint": "^5.18.0",
-    "typescript": "^3.5.3"
+    "tslint": "^5.18.0"
+  },
+  "devDependencies": {
+    "typescript": "^3.6.3"
   }
 }

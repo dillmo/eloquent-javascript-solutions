@@ -3,8 +3,9 @@ dependencies:
   '@types/node': 12.7.2
   cssnano: 4.1.10
   mime: 2.2.0
-  tslint: 5.18.0_typescript@3.5.3
-  typescript: 3.5.3
+  tslint: 5.18.0_typescript@3.6.3
+devDependencies:
+  typescript: 3.6.3
 lockfileVersion: 5.1
 packages:
   /@babel/code-frame/7.5.5:
@@ -1129,7 +1130,7 @@ packages:
     dev: false
     resolution:
       integrity: sha512-qOebF53frne81cf0S9B41ByenJ3/IuH8yJKngAX35CmiZySA0khhkovshKK+jGCaMnVomla7gVlIcc3EvKPbTQ==
-  /tslint/5.18.0_typescript@3.5.3:
+  /tslint/5.18.0_typescript@3.6.3:
     dependencies:
       '@babel/code-frame': 7.5.5
       builtin-modules: 1.1.1
@@ -1143,8 +1144,8 @@ packages:
       resolve: 1.12.0
       semver: 5.7.1
       tslib: 1.10.0
-      tsutils: 2.29.0_typescript@3.5.3
-      typescript: 3.5.3
+      tsutils: 2.29.0_typescript@3.6.3
+      typescript: 3.6.3
     dev: false
     engines:
       node: '>=4.8.0'
@@ -1153,22 +1154,21 @@ packages:
       typescript: '>=2.3.0-dev || >=2.4.0-dev || >=2.5.0-dev || >=2.6.0-dev || >=2.7.0-dev || >=2.8.0-dev || >=2.9.0-dev || >=3.0.0-dev || >= 3.1.0-dev || >= 3.2.0-dev'
     resolution:
       integrity: sha512-Q3kXkuDEijQ37nXZZLKErssQVnwCV/+23gFEMROi8IlbaBG6tXqLPQJ5Wjcyt/yHPKBC+hD5SzuGaMora+ZS6w==
-  /tsutils/2.29.0_typescript@3.5.3:
+  /tsutils/2.29.0_typescript@3.6.3:
     dependencies:
       tslib: 1.10.0
-      typescript: 3.5.3
+      typescript: 3.6.3
     dev: false
     peerDependencies:
       typescript: '>=2.1.0 || >=2.1.0-dev || >=2.2.0-dev || >=2.3.0-dev || >=2.4.0-dev || >=2.5.0-dev || >=2.6.0-dev || >=2.7.0-dev || >=2.8.0-dev || >=2.9.0-dev || >= 3.0.0-dev || >= 3.1.0-dev'
     resolution:
       integrity: sha512-g5JVHCIJwzfISaXpXE1qvNalca5Jwob6FjI4AoPlqMusJ6ftFE7IkkFoMhVLRgK+4Kx3gkzb8UZK5t5yTTvEmA==
-  /typescript/3.5.3:
-    dev: false
+  /typescript/3.6.3:
     engines:
       node: '>=4.2.0'
     hasBin: true
     resolution:
-      integrity: sha512-ACzBtm/PhXBDId6a6sDJfroT2pOWt/oOnk4/dElG5G33ZL776N3Y6/6bKZJBFpd+b05F3Ct9qDjMeJmRWtE2/g==
+      integrity: sha512-N7bceJL1CtRQ2RiG0AQME13ksR7DiuQh/QehubYcghzv20tnh+MQnQIuJddTmsbqYj+dztchykemz0zFzlvdQw==
   /uniq/1.0.1:
     dev: false
     resolution:
@@ -1202,4 +1202,4 @@ specifiers:
   cssnano: ^4.1.10
   mime: 2.2.0
   tslint: ^5.18.0
-  typescript: ^3.5.3
+  typescript: ^3.6.3
